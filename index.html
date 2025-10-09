@@ -2,141 +2,154 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Obsidian-like Graph with Styled Nodes</title>
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            background-color: #1e1e1e;
-        }
+  <meta charset="UTF-8" />
+  <title>Obsidian-like Graph with Styled Nodes</title>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #1e1e1e;
+    }
 
-        #graph {
-            width: 100vw;
-            height: 100vh;
-        }
-    </style>
+    #graph {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="graph"></div>
+  <div id="graph"></div>
 
-    <script>
-        // === Step 1: Raw node data with types ===
-        const rawNotes = [
-            { id: 1, label: "JY科", type: "main" },
-            { id: 2, label: "servletのセッション", type: "tag" },
-            { id: 3, label: "PHP", type: "folder" },
-            { id: 4, label: "DB設計", type: "image" },
-            { id: 5, label: "WITH RECURSIVEの使い方", type: "tag" },
-            { id: 6, label: "Java", type: "folder" }
-        ];
+  <script>
+    // === Step 1: Raw node data with types ===
+    const rawNotes = [
+      { id: 1, label: "プログラミング", type: "main" },
+      { id: 2, label: "servletのセッション", type: "tag" },
+      { id: 3, label: "#PHP", type: "folder" },
+      { id: 4, label: "アウン カウン ミャッ", type: "image" },
+      { id: 5, label: "WITH RECURSIVEの使い方", type: "tag" },
+      { id: 6, label: "#Java", type: "folder" },
+      { id: 7, label: "山本 朝陽", type: "image" },
+      { id: 8, label: "ヒアドキュメントの解説！", type: "tag" },
+      { id: 9, label: "おいしいラーメン屋の紹介", type: "tag" },
+      { id: 10, label: "百瀬 和真", type: "image" },
+      { id: 11, label: "世間話", type: "main" },
+      { id: 12, label: "#ラーメン", type: "folder" },
+    ];
 
-        // === Step 2: Apply visual styling based on node type ===
-        const styledNodes = rawNotes.map((note) => {
-            if (note.type === "main") {
-                return {
-                    ...note,
-                    shape: "dot",
-                    color: "#61afef",
-                    size: 30,
-                    font: { color: "#ffffff" },
-                };
-            } else if (note.type === "tag") {
-                return {
-                    ...note,
-                    shape: "box",
-                    color: "#98c379",
-                    size: 20,
-                    font: { color: "#000000" }
-                };
-            } else if (note.type === "folder") {
-                return {
-                    ...note,
-                    shape: "ellipse",
-                    color: "#c678dd",
-                    font: { color: "#ffffff" }
-                };
-            } else if (note.type === "image") {
-                return {
-                    ...note,
-                    shape: "image",
-                    image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
-                    size: 40
-                };
-            }
-            return note;
-        });
-
-        // === Step 3: Define edges between nodes ===
-        const edges = [
-            { from: 1, to: 2 },
-            { from: 1, to: 3 },
-            { from: 3, to: 4 },
-            { from: 2, to: 5 },
-            { from: 3, to: 6 },
-            { from: 4, to: 1 }
-        ];
-
-        // === Step 4: Create the network ===
-        const container = document.getElementById("graph");
-
-        const data = {
-            nodes: new vis.DataSet(styledNodes),
-            edges: new vis.DataSet(edges)
+    // === Step 2: Apply visual styling based on node type ===
+    const styledNodes = rawNotes.map((note) => {
+      if (note.type === "main") {
+        return {
+          ...note,
+          shape: "dot",
+          color: "#61afef",
+          size: 30,
+          font: { color: "#ffffff" },
         };
-
-        const options = {
-            layout: {
-                improvedLayout: true
-            },
-            physics: {
-                enabled: true,
-                forceAtlas2Based: {
-                    gravitationalConstant: -50,
-                    centralGravity: 0.01,
-                    springLength: 100,
-                    springConstant: 0.08
-                },
-                solver: "forceAtlas2Based",
-                timestep: 0.35,
-                stabilization: {
-                    iterations: 150
-                }
-            },
-            nodes: {
-                borderWidth: 0,
-                shadow: true
-            },
-            edges: {
-                color: "#888888",
-                width: 1.5,
-                smooth: {
-                    type: "straightCross",
-                    roundness: 1
-                },
-                length: 250
-            },
-            interaction: {
-                hover: true,
-                tooltipDelay: 100,
-                zoomView: true,
-                dragView: true,
-                dragNodes: true
-            }
+      } else if (note.type === "tag") {
+        return {
+          ...note,
+          shape: "box",
+          color: "#98c379",
+          size: 20,
+          font: { color: "#000000", size: 20 }
         };
+      } else if (note.type === "folder") {
+        return {
+          ...note,
+          shape: "ellipse",
+          color: "#c678dd",
+          font: { color: "#ffffff", size: 25 }
+        };
+      } else if (note.type === "image") {
+        return {
+          ...note,
+          shape: "image",
+          image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
+          size: 40,
+          font: { color: "#ffffff" },
+        };
+      }
+      return note;
+    });
 
-        const network = new vis.Network(container, data, options);
+    // === Step 3: Define edges between nodes ===
+    const edges = [
+      { from: 2, to: 6 },
+      { from: 2, to: 1 },
+      { from: 5, to: 3 },
+      { from: 5, to: 1 },
+      { from: 4, to: 2 },
+      { from: 7, to: 8 },
+      { from: 8, to: 6 },
+      { from: 8, to: 1 },
+      { from: 10, to: 9 },
+      { from: 9, to: 11 },
+      { from: 9, to: 12 },
+    ];
 
-        // === Step 5: Node click interaction ===
-        network.on("click", function (params) {
-            if (params.nodes.length > 0) {
-                const clickedId = params.nodes[0];
-                const node = styledNodes.find((n) => n.id === clickedId);
-                alert(`Clicked on: ${node.label} (type: ${node.type})`);
-            }
-        });
-    </script>
+    // === Step 4: Create the network ===
+    const container = document.getElementById("graph");
+
+    const data = {
+      nodes: new vis.DataSet(styledNodes),
+      edges: new vis.DataSet(edges)
+    };
+
+    const options = {
+      layout: {
+        improvedLayout: true
+      },
+      physics: {
+        enabled: true,
+        forceAtlas2Based: {
+          gravitationalConstant: -100,
+          centralGravity: 0.005,
+          springLength: 100,
+          springConstant: 0.005
+        },
+        solver: "forceAtlas2Based",
+        timestep: 0.35,
+        stabilization: {
+          iterations: 150
+        }
+      },
+      nodes: {
+        borderWidth: 0,
+        shadow: true
+      },
+      edges: {
+        color: "#888888",
+        width: 2.5,
+        smooth: {
+          type: "straightCross",
+          roundness: 1
+        },
+        length: 200
+      },
+      interaction: {
+        hover: true,
+        tooltipDelay: 100,
+        zoomView: true,
+        dragView: true,
+        dragNodes: true
+      }
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // === Step 5: Node click interaction ===
+    network.on("click", function (params) {
+      if (params.nodes.length > 0) {
+        const clickedId = params.nodes[0];
+        const node = styledNodes.find((n) => n.id === clickedId);
+        alert(`Clicked on: ${node.label} (type: ${node.type})`);
+      }
+    });
+  </script>
 </body>
 
+</html>
 </html>
